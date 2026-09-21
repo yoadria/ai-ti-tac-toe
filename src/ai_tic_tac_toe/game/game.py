@@ -1,5 +1,7 @@
 from . import board
-
+from ..ai import state
+from ..ai import brain
+from ..ai import agent
 
 def start_game():
     """Crea el tablero e inicia el juego."""
@@ -26,7 +28,10 @@ def play_player(game_board: list, player: int):
 def turn(game_board: list, player: int):
     """Ejecuta un turno completo."""
 
-    play_player(game_board, player)
+    if player == board.X:
+        play_player(game_board, player)
+    else:
+        play_ai(game_board, player)
 
     board.show_board(game_board)
 
@@ -43,6 +48,8 @@ def turn(game_board: list, player: int):
 
 def game():
     """Controla una partida completa."""
+    
+    brain.load_brain()
 
     game_board, player = start_game()
 
@@ -65,6 +72,18 @@ def game():
 
         player *= -1
 
+def play_ai(game_board: list, player: int):
+    """Realiza una jugada de la IA."""
+
+    current_state = state.get_state(game_board, player)
+
+    actions = board.get_available_moves(game_board)
+
+    values = brain.get_action_values(current_state, actions)
+
+    action = agent.choose_action(values)
+
+    board.make_move(game_board, action, player)
 
 if __name__ == "__main__":
     game()
