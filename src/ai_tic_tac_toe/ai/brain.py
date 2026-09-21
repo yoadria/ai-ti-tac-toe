@@ -59,4 +59,4 @@ def save_brain():
         )
         
     with open(BRAIN_PATH, "w", encoding="utf-8") as file:
-        json.dump(data, file, intent=4)
+        json.dump(data, file, indent=4)
