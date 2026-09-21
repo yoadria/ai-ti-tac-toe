@@ -3,6 +3,7 @@ from ..ai import state
 from ..ai import brain
 from ..ai import agent
 from ..ai import learning
+import random
 
 def start_game():
     """Crea el tablero e inicia el juego."""
@@ -11,12 +12,12 @@ def start_game():
 
     return game_board, player
 
-def turn(game_board: list, player: int, history: list):
+def turn(game_board: list, player: int, history: list, human_player: int):
     """Ejecuta un turno completo."""
     
     current_state = state.get_state(game_board, player)
 
-    if player == board.X:
+    if player == human_player:
         action = play_player(game_board, player)
     else:
         action = play_ai(game_board, player)
@@ -44,8 +45,12 @@ def game():
     brain.load_brain()
     
     game_board, player = start_game()
+    human_player, ai_player = choose_players()
     
     history = []
+    
+    print(f"Humano: {'X' if human_player == board.X else 'O'}")
+    print(f"IA: {'X' if ai_player == board.X else 'O'}")
     
     board.show_board(game_board)
 
@@ -98,6 +103,14 @@ def play_ai(game_board: list, player: int):
     board.make_move(game_board, action, player)
     
     return action
+
+def choose_players():
+    """Decide aleatoriamente qué ficha usa el humano y cuál la IA."""
+
+    human_player = random.choice([board.X, board.O])
+    ai_player = -human_player
+
+    return human_player, ai_player
 
 if __name__ == "__main__":
     game()
