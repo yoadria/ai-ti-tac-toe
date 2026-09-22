@@ -55,7 +55,7 @@ def game():
     board.show_board(game_board)
 
     while True:
-        result = turn(game_board, player, history)
+        result = turn(game_board, player, history, human_player)
 
         if result == board.X:
             print("Ha ganado X")
